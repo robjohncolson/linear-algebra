@@ -1,0 +1,148 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+% Theorem environments
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{example}{Example}[section]
+\newtheorem{exercise}{Exercise}
+
+% Custom commands
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\title{Linear Algebra Study Guide - Day 1\\
+\large Axler Sections 1.A and 1.B}
+\author{Study Notes}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Reading Summary}
+
+\subsection*{Section 1.A: $\R^n$ and $\C^n$}
+
+\subsubsection*{Key Definitions}
+
+\begin{definition}[Complex Numbers]
+The set of complex numbers $\C = \{a + bi : a, b \in \R\}$ with addition and multiplication defined by:
+\begin{itemize}
+    \item $(a + bi) + (c + di) = (a + c) + (b + d)i$
+    \item $(a + bi)(c + di) = (ac - bd) + (ad + bc)i$
+\end{itemize}
+\end{definition}
+
+\begin{definition}[List]
+A \textbf{list} of length $n$ is an ordered collection of $n$ elements, written $(x_1, \ldots, x_n)$. Two lists are equal if and only if they have the same length and the same elements in the same order.
+\end{definition}
+
+\begin{definition}[$\F^n$]
+For $\F = \R$ or $\C$, we define $\F^n$ as the set of all lists of length $n$ of elements of $\F$:
+$$\F^n = \{(x_1, \ldots, x_n) : x_j \in \F \text{ for } j = 1, \ldots, n\}$$
+\end{definition}
+
+\begin{definition}[Addition in $\F^n$]
+Addition in $\F^n$ is defined by adding corresponding coordinates:
+$$(x_1, \ldots, x_n) + (y_1, \ldots, y_n) = (x_1 + y_1, \ldots, x_n + y_n)$$
+\end{definition}
+
+\begin{definition}[Scalar Multiplication in $\F^n$]
+For $\lambda \in \F$ and $(x_1, \ldots, x_n) \in \F^n$:
+$$\lambda(x_1, \ldots, x_n) = (\lambda x_1, \ldots, \lambda x_n)$$
+\end{definition}
+
+\subsubsection*{Key Properties}
+\begin{itemize}
+    \item Complex arithmetic satisfies commutativity, associativity, existence of identities (0 for addition, 1 for multiplication), existence of inverses, and distributivity
+    \item The zero vector in $\F^n$ is $0 = (0, \ldots, 0)$
+    \item The additive inverse of $x = (x_1, \ldots, x_n)$ is $-x = (-x_1, \ldots, -x_n)$
+    \item Addition in $\F^n$ is commutative and associative
+    \item Scalar multiplication satisfies: $(ab)x = a(bx)$, $1x = x$, $\lambda(x + y) = \lambda x + \lambda y$, and $(a + b)x = ax + bx$
+\end{itemize}
+
+\subsection*{Section 1.B: Definition of Vector Space}
+
+\subsubsection*{Key Definitions}
+
+\begin{definition}[Vector Space]
+A \textbf{vector space} is a set $V$ along with an addition on $V$ and a scalar multiplication on $V$ such that the following properties hold:
+\begin{itemize}
+    \item \textbf{Commutativity:} $u + v = v + u$ for all $u, v \in V$
+    \item \textbf{Associativity:} $(u + v) + w = u + (v + w)$ and $(ab)v = a(bv)$ for all $u, v, w \in V$ and all $a, b \in \F$
+    \item \textbf{Additive identity:} There exists an element $0 \in V$ such that $v + 0 = v$ for all $v \in V$
+    \item \textbf{Additive inverse:} For every $v \in V$, there exists $w \in V$ such that $v + w = 0$
+    \item \textbf{Multiplicative identity:} $1v = v$ for all $v \in V$
+    \item \textbf{Distributive properties:} $a(u + v) = au + av$ and $(a + b)v = av + bv$ for all $a, b \in \F$ and all $u, v \in V$
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Vectors and Points]
+Elements of a vector space are called \textbf{vectors} or \textbf{points}.
+\end{definition}
+
+\subsubsection*{Key Theorems and Results}
+
+\begin{theorem}[Uniqueness of Additive Identity]
+A vector space has a unique additive identity.
+\end{theorem}
+
+\begin{theorem}[Uniqueness of Additive Inverse]
+Every element in a vector space has a unique additive inverse.
+\end{theorem}
+
+\begin{theorem}
+For any $v \in V$ (where $V$ is a vector space):
+\begin{itemize}
+    \item $0v = 0$ (where the first 0 is the scalar and the second is the zero vector)
+    \item $(-1)v = -v$ (the additive inverse of $v$)
+\end{itemize}
+\end{theorem}
+
+\subsubsection*{Important Examples}
+\begin{itemize}
+    \item $\F^n$ with componentwise addition and scalar multiplication
+    \item $\F^{\infty}$ (infinite sequences) with componentwise operations
+    \item $\F^S$ (functions from a set $S$ to $\F$) with pointwise operations
+    \item The set $\mathcal{P}_m(\F)$ of polynomials with coefficients in $\F$ and degree at most $m$
+\end{itemize}
+
+\section*{Exercises}
+
+\subsection*{Exercise 1.A.3}
+\begin{exercise}
+Find two distinct square roots of $i$.
+\end{exercise}
+
+\begin{proof}[Solution]
+\vspace{4in}
+\end{proof}
+
+\subsection*{Exercise 1.A.9}
+\begin{exercise}
+Show that $\lambda(\alpha + \beta) = \lambda\alpha + \lambda\beta$ for all $\lambda, \alpha, \beta \in \C$.
+\end{exercise}
+
+\begin{proof}[Solution]
+\vspace{4in}
+\end{proof}
+
+\subsection*{Exercise 1.B.2}
+\begin{exercise}
+Suppose $a \in \F$, $v \in V$, and $av = 0$. Prove that $a = 0$ or $v = 0$.
+\end{exercise}
+
+\begin{proof}[Solution]
+\vspace{5in}
+\end{proof}
+
+\end{document}

@@ -1,0 +1,36 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//LinearAlgebraStudyOverseer//EN
+BEGIN:VEVENT
+UID:ladr-w1-d1-20251109@studyoverseer.com
+DTSTAMP:20251109T000000Z
+DTSTART;VALUE=DATE:20251109
+DTEND;VALUE=DATE:20251110
+SUMMARY:LADR Week 1, Day 1: From Concrete to Abstract
+DESCRIPTION:Reading: Axler, Sections 1.A & 1.B.\n\nConceptual Focus: Understand the leap from Rⁿ properties to the formal axioms of a vector space (1.19). Why these axioms? They are the essence of "linearity".\n\nTool Integration:\n- ChatGPT: Ask for a simple analogy for a vector space that isn't about arrows (e.g., "Explain a vector space like it's a collection of recipes").\n\nExercises:\n1. 1.A, Ex. 3\n2. 1.A, Ex. 9\n3. 1.B, Ex. 2
+END:VEVENT
+BEGIN:VEVENT
+UID:ladr-w1-d2-20251110@studyoverseer.com
+DTSTAMP:20251109T000000Z
+DTSTART;VALUE=DATE:20251110
+DTEND;VALUE=DATE:20251111
+SUMMARY:LADR Week 1, Day 2: Subspaces and Combinations
+DESCRIPTION:Reading: Axler, Section 1.C.\n\nConceptual Focus: Internalize the three conditions for a subspace (1.34). Understand why a union of subspaces isn't always a subspace, and how "sum" and "direct sum" provide structured ways to combine them.\n\nTool Integration:\n- NotebookLM: Ask it to "Summarize the key differences between a sum of subspaces and a direct sum of subspaces, citing definitions 1.36 and 1.40."\n- Desmos: Plot the subspaces U = span{(1, 2)} and W = span{(-1, 1)} in R². Visualize their sum U+W. Then plot U and the line y=x+1 to see why the latter is not a subspace.\n\nExercises:\n1. 1.C, Ex. 1(a, b)\n2. 1.C, Ex. 10\n3. 1.C, Ex. 12
+END:VEVENT
+BEGIN:VEVENT
+UID:ladr-w1-d3-20251111@studyoverseer.com
+DTSTAMP:20251109T000000Z
+DTSTART;VALUE=DATE:20251111
+DTEND;VALUE=DATE:20251112
+SUMMARY:LADR Week 1, Day 3: Span & Linear Independence
+DESCRIPTION:Reading: Axler, Section 2.A.\n\nConceptual Focus: Master the definitions of linear combination, span, and linear independence. See span as a generative concept and linear independence as an efficiency concept.\n\nTool Integration:\n- Claude: Ask it to "Walk me through the proof of the Linear Dependence Lemma (2.21) in Axler's 'Linear Algebra Done Right', explaining the logic and motivation of each step."\n- Desmos: In R², plot two vectors that are linearly dependent (e.g., u=(1,2) and v=(2,4)). Use sliders to visualize their span. Contrast this with two linearly independent vectors (e.g., u=(1,2) and w=(-1,1)).\n\nExercises:\n1. 2.A, Ex. 1\n2. 2.A, Ex. 6\n3. 2.A, Ex. 11\n4. 2.A, Ex. 14
+END:VEVENT
+BEGIN:VEVENT
+UID:ladr-w1-d4-20251112@studyoverseer.com
+DTSTAMP:20251109T000000Z
+DTSTART;VALUE=DATE:20251112
+DTEND;VALUE=DATE:20251113
+SUMMARY:LADR Week 1, Day 4: Basis & Dimension
+DESCRIPTION:Reading: Axler, Sections 2.B & 2.C.\n\nConceptual Focus: A basis is the "perfect" spanning set. The core insight is that all bases for a space have the same length, which makes the concept of "dimension" well-defined and powerful.\n\nTool Integration:\n- ChatGPT: Ask for a creative analogy for span, linear independence, and basis (e.g., using primary colors, musical notes, or ingredients).\n- NotebookLM: Ask it to "List the key theorems from Sections 2.B and 2.C and provide a one-sentence summary of what each one accomplishes."\n\nExercises:\n1. 2.B, Ex. 3\n2. 2.B, Ex. 8\n3. 2.C, Ex. 1\n4. 2.C, Ex. 12
+END:VEVENT
+END:VCALENDAR

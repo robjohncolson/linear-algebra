@@ -2,8 +2,9 @@
 """
 LADR_Explorer.py - Linear Algebra Done Right Interactive Study Companion
 
-Dependencies: numpy
-Install with: pip install numpy
+Dependencies:
+    - numpy: pip install numpy
+    - rich: pip install rich (optional, for prettier output)
 
 This script provides an interactive menu-driven interface for exploring concepts
 and exercises from "Linear Algebra Done Right" (3rd Edition) by Sheldon Axler.
@@ -14,16 +15,29 @@ Usage:
 Features:
     - Easy numbered menu navigation (no typing topic names!)
     - 16 core linear algebra concepts with detailed explanations
-    - Python/NumPy code examples for each concept
+    - Python/NumPy code examples with syntax highlighting
     - Visualization suggestions for understanding
     - 11 exercises with helpful hints
-    - Unicode mathematical notation support
+    - Beautiful mathematical notation with rich formatting
 
 Simply run the program and select options by number.
 """
 
 import numpy as np
 import sys
+
+# Try to import rich for pretty output, fall back to plain text if not available
+try:
+    from rich.console import Console
+    from rich.panel import Panel
+    from rich.syntax import Syntax
+    from rich.markdown import Markdown
+    from rich.text import Text
+    RICH_AVAILABLE = True
+    console = Console()
+except ImportError:
+    RICH_AVAILABLE = False
+    console = None
 
 
 # ============================================================================
@@ -844,6 +858,108 @@ EXERCISES = {
 
 
 # ============================================================================
+# FORMATTING HELPERS
+# ============================================================================
+
+def enhance_math_notation(text):
+    """Enhance mathematical notation with better Unicode characters."""
+    # Superscripts
+    superscripts = {'0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
+                   '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹',
+                   'n': 'ⁿ', '-': '⁻', '+': '⁺'}
+
+    # Common replacements for prettier math
+    replacements = {
+        'R^2': 'ℝ²',
+        'R^3': 'ℝ³',
+        'R^n': 'ℝⁿ',
+        'C^2': 'ℂ²',
+        'C^3': 'ℂ³',
+        'F^2': '𝔽²',
+        'F^3': '𝔽³',
+        '->': '→',
+        '>=': '≥',
+        '<=': '≤',
+        '!=': '≠',
+        '~=': '≈',
+        'sqrt': '√',
+        'infinity': '∞',
+        'alpha': 'α',
+        'beta': 'β',
+        'gamma': 'γ',
+        'delta': 'δ',
+        'theta': 'θ',
+        'pi': 'π',
+        'sigma': 'σ',
+        'tau': 'τ',
+        'forall': '∀',
+        'exists': '∃',
+    }
+
+    result = text
+    for old, new in replacements.items():
+        result = result.replace(old, new)
+
+    return result
+
+
+def print_section(title, content, style="info"):
+    """Print a section with rich formatting if available, otherwise plain text."""
+    if RICH_AVAILABLE:
+        # Enhance the content with better math notation
+        enhanced = enhance_math_notation(content)
+
+        # Choose color based on style
+        colors = {
+            "info": "cyan",
+            "code": "green",
+            "visual": "magenta",
+            "hint": "yellow",
+            "problem": "blue"
+        }
+        color = colors.get(style, "white")
+
+        panel = Panel(
+            enhanced,
+            title=f"[bold {color}]{title}[/bold {color}]",
+            border_style=color,
+            padding=(1, 2)
+        )
+        console.print(panel)
+    else:
+        # Fallback to plain text
+        print("\n" + "─"*70)
+        print(title)
+        print("─"*70)
+        print(enhance_math_notation(content))
+
+
+def print_code(code, language="python"):
+    """Print code with syntax highlighting if rich is available."""
+    if RICH_AVAILABLE:
+        syntax = Syntax(code, language, theme="monokai", line_numbers=True)
+        console.print(Panel(syntax, title="[bold green]Python Example[/bold green]",
+                          border_style="green", padding=(1, 2)))
+    else:
+        print("\n" + "─"*70)
+        print("🐍 PYTHON EXAMPLE (NUMPY)")
+        print("─"*70)
+        print(code)
+
+
+def print_header(text, style="bold cyan"):
+    """Print a formatted header."""
+    if RICH_AVAILABLE:
+        console.print(f"\n[{style}]{'='*70}[/{style}]")
+        console.print(f"[{style}]{text.center(70)}[/{style}]")
+        console.print(f"[{style}]{'='*70}[/{style}]")
+    else:
+        print("\n" + "="*70)
+        print(text.center(70))
+        print("="*70)
+
+
+# ============================================================================
 # COMMAND HANDLERS
 # ============================================================================
 
@@ -887,24 +1003,25 @@ def show_concept(concept_name):
     """Display a concept's full information."""
     concept = CONCEPTS[concept_name]
 
-    print("\n" + "="*70)
-    print(f"CONCEPT: {concept_name.upper()}")
-    print("="*70)
+    # Header
+    print_header(f"CONCEPT: {concept_name.upper()}")
 
-    print("\n" + "─"*70)
-    print("📖 CONCEPTUAL EXPLANATION (from Axler's LADR)")
-    print("─"*70)
-    print(concept["explanation"])
+    # Conceptual Explanation
+    print_section(
+        "📖 CONCEPTUAL EXPLANATION (from Axler's LADR)",
+        concept["explanation"],
+        style="info"
+    )
 
-    print("\n" + "─"*70)
-    print("🐍 PYTHON EXAMPLE (NUMPY)")
-    print("─"*70)
-    print(concept["python_example"])
+    # Python Example with syntax highlighting
+    print_code(concept["python_example"])
 
-    print("\n" + "─"*70)
-    print("📊 VISUALIZATION IDEA")
-    print("─"*70)
-    print(concept["visualization"])
+    # Visualization
+    print_section(
+        "📊 VISUALIZATION IDEA",
+        concept["visualization"],
+        style="visual"
+    )
     print()
 
 
@@ -912,19 +1029,22 @@ def show_exercise(exercise_num):
     """Display an exercise's problem and hint."""
     exercise = EXERCISES[exercise_num]
 
-    print("\n" + "="*70)
-    print(f"EXERCISE {exercise_num}")
-    print("="*70)
+    # Header
+    print_header(f"EXERCISE {exercise_num}")
 
-    print("\n" + "─"*70)
-    print("📝 PROBLEM STATEMENT")
-    print("─"*70)
-    print(exercise["text"])
+    # Problem Statement
+    print_section(
+        "📝 PROBLEM STATEMENT",
+        exercise["text"],
+        style="problem"
+    )
 
-    print("\n" + "─"*70)
-    print("💡 HINT")
-    print("─"*70)
-    print(exercise["hint"])
+    # Hint
+    print_section(
+        "💡 HINT",
+        exercise["hint"],
+        style="hint"
+    )
     print()
 
 
@@ -1034,6 +1154,12 @@ Axler's determinant-free, conceptual approach.
 
 def main():
     """Main interactive loop for the LADR Explorer."""
+    # Show a message if rich is not available
+    if not RICH_AVAILABLE:
+        print("\n" + "="*70)
+        print("NOTE: For enhanced visuals, install rich: pip install rich")
+        print("="*70)
+
     while True:
         try:
             display_main_menu()
@@ -1047,13 +1173,19 @@ def main():
                 show_about()
                 input("\n[Press Enter to continue...]")
             elif choice == '4':
-                print("\n👋 Goodbye! Keep exploring linear algebra!\n")
+                if RICH_AVAILABLE:
+                    console.print("\n[bold green]👋 Goodbye! Keep exploring linear algebra![/bold green]\n")
+                else:
+                    print("\n👋 Goodbye! Keep exploring linear algebra!\n")
                 break
             else:
                 print("\n❌ Invalid choice. Please enter a number between 1 and 4.")
 
         except KeyboardInterrupt:
-            print("\n\n👋 Goodbye! Keep exploring linear algebra!\n")
+            if RICH_AVAILABLE:
+                console.print("\n\n[bold green]👋 Goodbye! Keep exploring linear algebra![/bold green]\n")
+            else:
+                print("\n\n👋 Goodbye! Keep exploring linear algebra!\n")
             break
 
         except Exception as e:

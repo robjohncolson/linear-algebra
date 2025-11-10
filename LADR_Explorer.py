@@ -5,17 +5,21 @@ LADR_Explorer.py - Linear Algebra Done Right Interactive Study Companion
 Dependencies: numpy
 Install with: pip install numpy
 
-This script provides an interactive command-line interface for exploring concepts
+This script provides an interactive menu-driven interface for exploring concepts
 and exercises from "Linear Algebra Done Right" (3rd Edition) by Sheldon Axler.
 
 Usage:
     python LADR_Explorer.py
 
-Commands:
-    list                      - List all available concepts and exercises
-    concept <topic_name>      - Get explanation, Python example, and visualization for a topic
-    exercise <exercise_num>   - Get the exercise text and a hint
-    quit                      - Exit the program
+Features:
+    - Easy numbered menu navigation (no typing topic names!)
+    - 16 core linear algebra concepts with detailed explanations
+    - Python/NumPy code examples for each concept
+    - Visualization suggestions for understanding
+    - 11 exercises with helpful hints
+    - Unicode mathematical notation support
+
+Simply run the program and select options by number.
 """
 
 import numpy as np
@@ -843,154 +847,210 @@ EXERCISES = {
 # COMMAND HANDLERS
 # ============================================================================
 
-def list_concepts():
-    """Display all available concepts."""
+def get_sorted_concepts():
+    """Return sorted list of concept names."""
+    return sorted(CONCEPTS.keys())
+
+
+def get_sorted_exercises():
+    """Return sorted list of exercise numbers."""
+    return sorted(EXERCISES.keys())
+
+
+def display_concept_menu():
+    """Display numbered list of concepts and return the list."""
+    concepts = get_sorted_concepts()
     print("\n" + "="*70)
-    print("*** AVAILABLE CONCEPTS ***")
+    print("*** SELECT A CONCEPT ***")
     print("="*70)
-    sorted_concepts = sorted(CONCEPTS.keys())
-    for i, concept in enumerate(sorted_concepts, 1):
-        print(f"  {i:2d}. {concept}")
-    print("\nUsage: concept <topic_name>")
-    print("Example: concept linear independence")
+    for i, concept in enumerate(concepts, 1):
+        print(f"  {i:2d}. {concept.title()}")
+    print(f"\n  0. Back to main menu")
     print("="*70)
-    print()
+    return concepts
 
 
-def handle_concept(topic_name):
-    """Handle the 'concept' command by displaying explanation, example, and visualization."""
-    topic_lower = topic_name.lower().strip()
-
-    if topic_lower not in CONCEPTS:
-        available = ", ".join(sorted(CONCEPTS.keys()))
-        print(f"\n❌ Concept '{topic_name}' not found in knowledge base.")
-        print(f"\nAvailable concepts:\n{available}\n")
-        return
-
-    concept = CONCEPTS[topic_lower]
-
-    # Print the three sections
+def display_exercise_menu():
+    """Display numbered list of exercises and return the list."""
+    exercises = get_sorted_exercises()
     print("\n" + "="*70)
-    print("*** CONCEPTUAL EXPLANATION (from Axler's LADR) ***")
+    print("*** SELECT AN EXERCISE ***")
     print("="*70)
+    for i, exercise in enumerate(exercises, 1):
+        print(f"  {i:2d}. Exercise {exercise}")
+    print(f"\n  0. Back to main menu")
+    print("="*70)
+    return exercises
+
+
+def show_concept(concept_name):
+    """Display a concept's full information."""
+    concept = CONCEPTS[concept_name]
+
+    print("\n" + "="*70)
+    print(f"CONCEPT: {concept_name.upper()}")
+    print("="*70)
+
+    print("\n" + "─"*70)
+    print("📖 CONCEPTUAL EXPLANATION (from Axler's LADR)")
+    print("─"*70)
     print(concept["explanation"])
 
-    print("\n" + "="*70)
-    print("*** PYTHON EXAMPLE (NUMPY) ***")
-    print("="*70)
+    print("\n" + "─"*70)
+    print("🐍 PYTHON EXAMPLE (NUMPY)")
+    print("─"*70)
     print(concept["python_example"])
 
-    print("\n" + "="*70)
-    print("*** VISUALIZATION IDEA ***")
-    print("="*70)
+    print("\n" + "─"*70)
+    print("📊 VISUALIZATION IDEA")
+    print("─"*70)
     print(concept["visualization"])
     print()
 
 
-def list_exercises():
-    """Display all available exercises."""
-    print("\n" + "="*70)
-    print("*** AVAILABLE EXERCISES ***")
-    print("="*70)
-    sorted_exercises = sorted(EXERCISES.keys())
-    for i, exercise in enumerate(sorted_exercises, 1):
-        print(f"  {i:2d}. {exercise}")
-    print("\nUsage: exercise <exercise_num>")
-    print("Example: exercise 2.A.11")
-    print("="*70)
-    print()
-
-
-def handle_exercise(exercise_number):
-    """Handle the 'exercise' command by displaying the problem text and hint."""
-    exercise_number = exercise_number.strip()
-
-    if exercise_number not in EXERCISES:
-        available = ", ".join(sorted(EXERCISES.keys()))
-        print(f"\n❌ Exercise '{exercise_number}' not found in knowledge base.")
-        print(f"\nAvailable exercises:\n{available}\n")
-        return
-
-    exercise = EXERCISES[exercise_number]
+def show_exercise(exercise_num):
+    """Display an exercise's problem and hint."""
+    exercise = EXERCISES[exercise_num]
 
     print("\n" + "="*70)
-    print(f"*** EXERCISE {exercise_number} ***")
+    print(f"EXERCISE {exercise_num}")
     print("="*70)
+
+    print("\n" + "─"*70)
+    print("📝 PROBLEM STATEMENT")
+    print("─"*70)
     print(exercise["text"])
 
-    print("\n" + "-"*70)
-    print("*** HINT ***")
-    print("-"*70)
+    print("\n" + "─"*70)
+    print("💡 HINT")
+    print("─"*70)
     print(exercise["hint"])
     print()
 
 
-def parse_command(user_input):
-    """Parse user input into command and argument."""
-    parts = user_input.strip().split(maxsplit=1)
+def concepts_menu():
+    """Interactive menu for browsing concepts."""
+    while True:
+        concepts = display_concept_menu()
+        try:
+            choice = input("\nEnter number (or 0 to go back): ").strip()
 
-    if len(parts) == 0:
-        return None, None
+            if choice == '0':
+                return
 
-    command = parts[0].lower()
-    argument = parts[1] if len(parts) > 1 else ""
+            if choice.isdigit():
+                idx = int(choice) - 1
+                if 0 <= idx < len(concepts):
+                    show_concept(concepts[idx])
+                    input("\n[Press Enter to continue...]")
+                else:
+                    print("❌ Invalid number. Please try again.")
+            else:
+                print("❌ Please enter a number.")
+        except KeyboardInterrupt:
+            return
 
-    return command, argument
+
+def exercises_menu():
+    """Interactive menu for browsing exercises."""
+    while True:
+        exercises = display_exercise_menu()
+        try:
+            choice = input("\nEnter number (or 0 to go back): ").strip()
+
+            if choice == '0':
+                return
+
+            if choice.isdigit():
+                idx = int(choice) - 1
+                if 0 <= idx < len(exercises):
+                    show_exercise(exercises[idx])
+                    input("\n[Press Enter to continue...]")
+                else:
+                    print("❌ Invalid number. Please try again.")
+            else:
+                print("❌ Please enter a number.")
+        except KeyboardInterrupt:
+            return
 
 
 # ============================================================================
 # MAIN LOOP
 # ============================================================================
 
-def main():
-    """Main interactive loop for the LADR Explorer."""
-    print("="*70)
-    print(" "*15 + "WELCOME TO THE LADR EXPLORER!")
+def display_main_menu():
+    """Display the main menu."""
+    print("\n" + "="*70)
+    print(" "*20 + "🎓 LADR EXPLORER 🎓")
     print("="*70)
     print("\nYour interactive study companion for")
     print("'Linear Algebra Done Right' (3rd Edition) by Sheldon Axler")
-    print("\nCommands:")
-    print("  list                      - List all available concepts and exercises")
-    print("  concept <topic_name>      - Explore a linear algebra concept")
-    print("  exercise <exercise_num>   - Get a hint for an exercise")
-    print("  quit                      - Exit the program")
+    print("\n" + "─"*70)
+    print("MAIN MENU")
+    print("─"*70)
+    print("  1. Browse Concepts (16 topics)")
+    print("  2. Browse Exercises (11 problems)")
+    print("  3. About this program")
+    print("  4. Quit")
     print("="*70)
 
+
+def show_about():
+    """Display information about the program."""
+    print("\n" + "="*70)
+    print("ABOUT LADR EXPLORER")
+    print("="*70)
+    print("""
+This program provides an interactive way to explore concepts and exercises
+from "Linear Algebra Done Right" (3rd Edition) by Sheldon Axler.
+
+Features:
+  • 16 core concepts with detailed explanations
+  • Python/NumPy code examples for each concept
+  • Visualization suggestions for understanding
+  • 11 exercises with helpful hints
+  • Easy numbered navigation
+
+Each concept includes:
+  📖 Conceptual explanation from Axler's approach
+  🐍 Python/NumPy code examples
+  📊 Visualization ideas for Desmos or Matplotlib
+
+Mathematical Notation:
+  • v₁, v₂, ... = vectors (subscripts)
+  • λ = lambda (eigenvalue)
+  • ⟨u, v⟩ = inner product
+  • ∈ = element of
+  • ⊕ = direct sum
+  • ⊥ = orthogonal complement
+
+Dependencies: numpy (install with: pip install numpy)
+
+Created to help students understand linear algebra through
+Axler's determinant-free, conceptual approach.
+    """)
+    print("="*70)
+
+
+def main():
+    """Main interactive loop for the LADR Explorer."""
     while True:
         try:
-            # Get user input
-            user_input = input("\nEnter a command: ").strip()
+            display_main_menu()
+            choice = input("\nEnter your choice (1-4): ").strip()
 
-            if not user_input:
-                continue
-
-            # Parse command
-            command, argument = parse_command(user_input)
-
-            # Execute command
-            if command == "quit" or command == "exit":
+            if choice == '1':
+                concepts_menu()
+            elif choice == '2':
+                exercises_menu()
+            elif choice == '3':
+                show_about()
+                input("\n[Press Enter to continue...]")
+            elif choice == '4':
                 print("\n👋 Goodbye! Keep exploring linear algebra!\n")
                 break
-
-            elif command == "list":
-                list_concepts()
-                list_exercises()
-
-            elif command == "concept":
-                if not argument:
-                    list_concepts()
-                else:
-                    handle_concept(argument)
-
-            elif command == "exercise":
-                if not argument:
-                    list_exercises()
-                else:
-                    handle_exercise(argument)
-
             else:
-                print(f"\n❌ Unknown command: '{command}'")
-                print("Valid commands: list, concept, exercise, quit\n")
+                print("\n❌ Invalid choice. Please enter a number between 1 and 4.")
 
         except KeyboardInterrupt:
             print("\n\n👋 Goodbye! Keep exploring linear algebra!\n")

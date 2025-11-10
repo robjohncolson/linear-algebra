@@ -12,6 +12,7 @@ Usage:
     python LADR_Explorer.py
 
 Commands:
+    list                      - List all available concepts and exercises
     concept <topic_name>      - Get explanation, Python example, and visualization for a topic
     exercise <exercise_num>   - Get the exercise text and a hint
     quit                      - Exit the program
@@ -842,6 +843,20 @@ EXERCISES = {
 # COMMAND HANDLERS
 # ============================================================================
 
+def list_concepts():
+    """Display all available concepts."""
+    print("\n" + "="*70)
+    print("*** AVAILABLE CONCEPTS ***")
+    print("="*70)
+    sorted_concepts = sorted(CONCEPTS.keys())
+    for i, concept in enumerate(sorted_concepts, 1):
+        print(f"  {i:2d}. {concept}")
+    print("\nUsage: concept <topic_name>")
+    print("Example: concept linear independence")
+    print("="*70)
+    print()
+
+
 def handle_concept(topic_name):
     """Handle the 'concept' command by displaying explanation, example, and visualization."""
     topic_lower = topic_name.lower().strip()
@@ -869,6 +884,20 @@ def handle_concept(topic_name):
     print("*** VISUALIZATION IDEA ***")
     print("="*70)
     print(concept["visualization"])
+    print()
+
+
+def list_exercises():
+    """Display all available exercises."""
+    print("\n" + "="*70)
+    print("*** AVAILABLE EXERCISES ***")
+    print("="*70)
+    sorted_exercises = sorted(EXERCISES.keys())
+    for i, exercise in enumerate(sorted_exercises, 1):
+        print(f"  {i:2d}. {exercise}")
+    print("\nUsage: exercise <exercise_num>")
+    print("Example: exercise 2.A.11")
+    print("="*70)
     print()
 
 
@@ -921,6 +950,7 @@ def main():
     print("\nYour interactive study companion for")
     print("'Linear Algebra Done Right' (3rd Edition) by Sheldon Axler")
     print("\nCommands:")
+    print("  list                      - List all available concepts and exercises")
     print("  concept <topic_name>      - Explore a linear algebra concept")
     print("  exercise <exercise_num>   - Get a hint for an exercise")
     print("  quit                      - Exit the program")
@@ -942,23 +972,25 @@ def main():
                 print("\n👋 Goodbye! Keep exploring linear algebra!\n")
                 break
 
+            elif command == "list":
+                list_concepts()
+                list_exercises()
+
             elif command == "concept":
                 if not argument:
-                    print("\n❌ Please specify a concept name.")
-                    print("Example: concept linear independence\n")
+                    list_concepts()
                 else:
                     handle_concept(argument)
 
             elif command == "exercise":
                 if not argument:
-                    print("\n❌ Please specify an exercise number.")
-                    print("Example: exercise 2.A.11\n")
+                    list_exercises()
                 else:
                     handle_exercise(argument)
 
             else:
                 print(f"\n❌ Unknown command: '{command}'")
-                print("Valid commands: concept, exercise, quit\n")
+                print("Valid commands: list, concept, exercise, quit\n")
 
         except KeyboardInterrupt:
             print("\n\n👋 Goodbye! Keep exploring linear algebra!\n")
